@@ -9,12 +9,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.Random;
 
 
 public class MainActivity extends AppCompatActivity {
-
+    //var declarations
     private Button firstButton, secondButton;
     private TextView timTextView, beTextView;
     private long startTime = 0, endTime = 0, bestTime = 0, gameTime = 0;
@@ -34,7 +35,6 @@ public class MainActivity extends AppCompatActivity {
         timTextView = (TextView)findViewById(R.id.timerTextView);
         beTextView = (TextView)findViewById(R.id.bestTimeTextView2);
 
-       // left = secondButton.getText().toString();
         //Get saved data
         mSharedPreferences = getSharedPreferences("myfile", MODE_PRIVATE);
         gtime = mSharedPreferences.getString("CurrentScore", "");
@@ -42,10 +42,11 @@ public class MainActivity extends AppCompatActivity {
         left = mSharedPreferences.getString("Left","");
         right = mSharedPreferences.getString("Right","");
 
+        //first initializing
         if(left.isEmpty() && right.isEmpty()) {
-            setNumbers();
+            setNumbers();//set the random numbers to the buttons
         }
-
+        //load scores from memory
         timTextView.setText(gtime);
         beTextView.setText(btime);
 
@@ -76,9 +77,10 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 bestTime = 0;
+                if(beTextView.getText().length()>0)
+                    setNumbers();
                 beTextView.setText("");
                 timTextView.setText("");
-                setNumbers();
             }
         });
     }
@@ -94,6 +96,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
+        //save data to memry before the app stops
         mSharedPreferences = getSharedPreferences("myfile", MODE_PRIVATE);
         e = mSharedPreferences.edit();
         e.putString("BestScore", ""+ bestTime);
@@ -120,26 +123,29 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-
+    //start counting the time
+    //calculation done by calculating the ms time difference
+    // between the two clicks using the Epoch time
     private void startTimer()
     {
-        if(startTime == 0) {
+        if(startTime == 0){ //set start time
             startTime = System.currentTimeMillis();
         }
     }
 
     private void stopTimer()
     {
-        endTime = System.currentTimeMillis();
-        gameTime = endTime - startTime;
-        startTime = 0;
+        endTime = System.currentTimeMillis();//current time
+        gameTime = endTime - startTime;//get time difference between clicks
+        startTime = 0;// reset start time to  zero
     }
 
+    // set random numbers to the buttons
     private void setNumbers()
     {
-        Random random = new Random();
-        int leftNum = random.nextInt(2) + 1;
-        int rightNum = 3 - leftNum;
+        Random random = new Random();//get random number to the first button
+        int leftNum = random.nextInt(2) + 1;// set left button
+        int rightNum = 3 - leftNum;//set right to the corresponding
         left = "" + leftNum;
         right = "" + rightNum;
         secondButton.setText(left);
@@ -147,22 +153,26 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    //sets both buttons clicks
     private void buttonFunction(String s)
     {
-       switch (s)
+       switch (s)//check which bummton are you now
        {
            case "1":
-               startTimer();
+               startTimer();//start the timer
                break;
            case "2":
-               if(startTime != 0) {
+               if(startTime != 0) { //if running
                    stopTimer();
                    //Show result in result block
                    timTextView.setText(gameTime + " ms");
                    //Update best time
-                   if (bestTime == 0 | bestTime > gameTime)
+                   if (bestTime == 0 | bestTime > gameTime){
                        bestTime = gameTime;
+                       Toast.makeText(this,R.string.newHighScore,Toast.LENGTH_SHORT).show();
+                   }
                    beTextView.setText(bestTime + " ms");
+                   setNumbers();//set new random numbers
                }
                break;
        }
