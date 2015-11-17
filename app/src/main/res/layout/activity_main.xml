@@ -57,4 +57,22 @@
         android:layout_below="@+id/timerTextView"
         android:layout_alignEnd="@+id/firstButton"
         android:layout_marginTop="41dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/bestScoreText"
+        android:id="@+id/textView2"
+        android:layout_alignBottom="@+id/bestTimeTextView2"
+        android:layout_alignStart="@+id/secondButton" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/lastScore"
+        android:id="@+id/textView"
+        android:layout_alignBottom="@+id/timerTextView"
+        android:layout_alignStart="@+id/secondButton" />
 </RelativeLayout>

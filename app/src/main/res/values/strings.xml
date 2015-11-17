@@ -5,6 +5,8 @@
     <string name="action_settings">Settings</string>
     <string name="secondButtonString">2</string>
     <string name="firstButtonString">1</string>
+    <string name="bestScoreText">Best Score:</string>
+    <string name="lastScore">Last Score:</string>
     <string name="newHighScore">New High Score!</string>
     <string name="timerTextViewString" />
     <string name="bestTimeTextViewString"/>
