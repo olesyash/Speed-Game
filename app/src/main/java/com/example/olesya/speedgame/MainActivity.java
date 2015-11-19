@@ -47,14 +47,17 @@ public class MainActivity extends AppCompatActivity {
             setNumbers();//set the random numbers to the buttons
         }
         //load scores from memory
-        timTextView.setText(gtime);
-        beTextView.setText(btime);
+
 
         //If there is a data show it, if not leave empty
-        if(!gtime.isEmpty())
+        if(!gtime.isEmpty()) {
+            timTextView.setText(gtime+" ms");
             gameTime = Long.parseLong(gtime);
-        if(!btime.isEmpty())
+        }
+        if(!btime.isEmpty()) {
+            beTextView.setText(btime+" ms");
             bestTime = Long.parseLong(btime);
+        }
 
         /* Define listener to first button to start time counter */
         firstButton.setOnClickListener(new View.OnClickListener() {
@@ -77,6 +80,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 bestTime = 0;
+                gameTime = 0;
                 if(beTextView.getText().length()>0)
                     setNumbers();
                 beTextView.setText("");
@@ -86,12 +90,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        // Inflate the menu; this adds items to the action bar if it is present.
+//        getMenuInflater().inflate(R.menu.menu_main, menu);
+//        return true;
+//    }
 
     @Override
     protected void onStop() {
@@ -99,8 +103,15 @@ public class MainActivity extends AppCompatActivity {
         //save data to memry before the app stops
         mSharedPreferences = getSharedPreferences("myfile", MODE_PRIVATE);
         e = mSharedPreferences.edit();
-        e.putString("BestScore", ""+ bestTime);
-        e.putString("CurrentScore", ""+ gameTime);
+        if(bestTime>0)
+            e.putString("BestScore", ""+ bestTime);
+        else
+            e.putString("BestScore", "");
+        if(gameTime>0)
+            e.putString("CurrentScore", ""+ gameTime);
+        else
+            e.putString("CurrentScore", "");
+//        e.putString("CurrentScore", ""+ gameTime);
         e.putString("Left", ""+ left);
         e.putString("Right", ""+ right);
         e.apply();
@@ -108,20 +119,20 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        // Handle action bar item clicks here. The action bar will
+//        // automatically handle clicks on the Home/Up button, so long
+//        // as you specify a parent activity in AndroidManifest.xml.
+//        int id = item.getItemId();
+//
+//        //noinspection SimplifiableIfStatement
+//        if (id == R.id.action_settings) {
+//            return true;
+//        }
+//
+//        return super.onOptionsItemSelected(item);
+//    }
 
     //start counting the time
     //calculation done by calculating the ms time difference
